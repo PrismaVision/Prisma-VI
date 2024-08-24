@@ -11,10 +11,18 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 
@@ -33,10 +41,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            CameraPreview()
+            CameraWithOverlay()
         }
         if (isCameraPermissionGranted()) {
-            setContent { CameraPreview() }
+            setContent { CameraWithOverlay() }
         } else {
             requestCameraPermission()
         }
@@ -61,11 +69,30 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startCamera() {
-        setContent { CameraPreview() }
+        setContent { CameraWithOverlay() }
     }
 }
 
+@Composable
+fun CameraWithOverlay() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        CameraPreview()
 
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Câmera Ativa", modifier = Modifier.padding(8.dp))
+
+            Button(onClick = { /* Action */ }) {
+                Text(text = "Capturar Cor")
+            }
+        }
+    }
+}
 
 
 @Composable
@@ -100,3 +127,4 @@ fun CameraPreview() {
         }
     }, ContextCompat.getMainExecutor(context))
 }
+
