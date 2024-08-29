@@ -37,5 +37,51 @@
 4.  Run the app:
     -   Select an emulator or connect a physical device, and click "Run" to start the app.
     - 
-## To do:
--  UML Diagrams;
+# App Flow Diagram
+
+## 1. Enter the App
+- Logo animation
+- Collect information about color blindness for statistics
+- Display usage tutorial
+
+## 2. Main Screen
+- **Choices**:
+  - **Upload**
+    - Choose an image from the gallery
+    - Open the photo
+    - Select the color
+    - Display overlay with color information
+    - **Actions**:
+      - Save color to Palette
+      - Deselect color
+  - **Camera**
+    - Take a photo
+    - Open the photo
+    - Select the color
+    - Display overlay with color information
+    - **Actions**:
+      - Save color to Palette
+      - Deselect color
+  - **Options**
+    - Open options screen (ends the process)
+
+## 3. Color Screen
+- **Save Color to Palette**
+  - Add color to Palette
+  - Add color to History
+- **Deselect Color**
+  - Remove selection and return to photo view
+
+## 4. Palette (on Main Screen)
+- **Displays**: Up to 5 saved colors
+- **Functions**:
+  - Delete Palette
+  - Delete Color from Palette
+  - Rename Palette
+  - Add Color to Palette
+
+## 5. History (on Main Screen)
+- **Displays**: Up to 7 recently saved colors
+- **Additional Information**: Objects with the same color
+
+---
