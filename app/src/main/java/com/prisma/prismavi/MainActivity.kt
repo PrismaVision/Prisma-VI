@@ -18,19 +18,29 @@ class MainActivity : ComponentActivity() {
         permissionManager = PermissionManager(this)
 
         setContent {
-            if (permissionManager!!.isCameraPermissionGranted()) {
+
+            if(permissionManager!!.isCameraPermissionGranted() && permissionManager!!.isStoragePermissionGranted()) {
                 cameraManager!!.startCamera()
-            } else {
-                permissionManager!!.requestCameraPermission()
+            }
+            else{
+            permissionManager!!.requestCameraPermission()
+            permissionManager!!.requestStoragePermission()
             }
         }
     }
 
-    fun onPermissionGranted() {
-        cameraManager?.startCamera()
+
+    fun onCameraPermissionGranted() {
     }
 
-    fun onPermissionDenied() {
-        permissionManager?.showPermissionDeniedDialog()
+    fun onCameraPermissionDenied() {
+        permissionManager?.showCameraPermissionDeniedDialog()
+    }
+
+    fun onStoragePermissionGranted() {
+    }
+
+    fun onStoragePermissionDenied() {
+        permissionManager?.showStoragePermissionDeniedDialog()
     }
 }
