@@ -11,6 +11,13 @@ class MainActivity : ComponentActivity() {
     private var cameraManager: CameraManager? = null
     private var permissionManager: PermissionManager? = null
 
+    private var currentPermissionRequest = 0
+
+    private val permissionsToRequest = arrayOf(
+        ::requestCameraPermission,
+        ::requestStoragePermission
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -18,19 +25,40 @@ class MainActivity : ComponentActivity() {
         permissionManager = PermissionManager(this)
 
         setContent {
+            checkAndRequestPermissions()
+        }
+    }
 
-            if(permissionManager!!.isCameraPermissionGranted() && permissionManager!!.isStoragePermissionGranted()) {
+    private fun checkAndRequestPermissions() {
+        if (currentPermissionRequest < permissionsToRequest.size) {
+            permissionsToRequest[currentPermissionRequest].invoke()
+        } else {
+            if (permissionManager!!.isCameraPermissionGranted()) {
                 cameraManager!!.startCamera()
-            }
-            else{
-            permissionManager!!.requestCameraPermission()
-            permissionManager!!.requestStoragePermission()
             }
         }
     }
 
+    private fun requestCameraPermission() {
+        if (!permissionManager!!.isCameraPermissionGranted()) {
+            permissionManager!!.requestCameraPermission()
+        } else {
+            onCameraPermissionGranted()
+        }
+    }
+
+    private fun requestStoragePermission() {
+        if (!permissionManager!!.isStoragePermissionGranted()) {
+            permissionManager!!.requestStoragePermission()
+        } else {
+            onStoragePermissionGranted()
+        }
+    }
 
     fun onCameraPermissionGranted() {
+        currentPermissionRequest++
+        checkAndRequestPermissions()
+        cameraManager!!.startCamera()
     }
 
     fun onCameraPermissionDenied() {
@@ -38,6 +66,8 @@ class MainActivity : ComponentActivity() {
     }
 
     fun onStoragePermissionGranted() {
+        currentPermissionRequest++
+        checkAndRequestPermissions()
     }
 
     fun onStoragePermissionDenied() {

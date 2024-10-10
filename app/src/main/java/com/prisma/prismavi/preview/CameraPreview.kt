@@ -51,7 +51,7 @@ fun CameraPreview() {
             it.setSurfaceProvider(previewView.surfaceProvider)
         }
 
-        val cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
+        val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
         imageCapture = ImageCapture.Builder().build()
 
         try {

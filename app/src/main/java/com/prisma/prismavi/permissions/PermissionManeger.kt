@@ -67,8 +67,7 @@ class PermissionManager(private val activity: MainActivity) {
         AlertDialog.Builder(activity)
             .setTitle("Permissão Necessária")
             .setMessage("A permissão para gravar no armazenamento é necessária para o funcionamento do aplicativo.")
-            .setPositiveButton("Tentar Novamente") { _, _ -> requestStoragePermission() }
-            .setNegativeButton("Sair") { _, _ -> activity.finish() }
+            .setNegativeButton("Ok") { _, _ -> null }
             .show()
     }
 }
