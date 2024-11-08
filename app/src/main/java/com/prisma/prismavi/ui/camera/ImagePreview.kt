@@ -1,4 +1,4 @@
-package com.prisma.prismavi.preview
+package com.prisma.prismavi.ui.camera
 
 import android.net.Uri
 import androidx.compose.foundation.Image

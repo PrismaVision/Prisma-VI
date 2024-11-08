@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.prisma.prismavi"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.prisma.prismavi"
