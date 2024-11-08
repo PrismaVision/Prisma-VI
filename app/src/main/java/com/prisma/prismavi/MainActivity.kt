@@ -2,35 +2,21 @@ package com.prisma.prismavi
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import com.prisma.prismavi.camera.CameraManager
-import com.prisma.prismavi.permissions.PermissionManager
+import com.prisma.prismavi.ui.navigation.ViewManager
+import com.prisma.prismavi.core.permissions.PermissionManager
+import com.prisma.prismavi.ui.navigation.Screen
 
 class MainActivity : ComponentActivity() {
 
-    private var cameraManager: CameraManager? = null
-    private var permissionManager: PermissionManager? = null
+    private lateinit var viewManager: ViewManager
+    private lateinit var permissionManager: PermissionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        cameraManager = CameraManager(this)
+        // Inicializa o PermissionManager e o ViewManager
         permissionManager = PermissionManager(this)
+        viewManager = ViewManager(this, permissionManager)
 
-        setContent {
-            if (permissionManager!!.isCameraPermissionGranted()) {
-                cameraManager!!.startCamera()
-            } else {
-                permissionManager!!.requestCameraPermission()
-            }
-        }
-    }
-
-    fun onPermissionGranted() {
-        cameraManager?.startCamera()
-    }
-
-    fun onPermissionDenied() {
-        permissionManager?.showPermissionDeniedDialog()
     }
 }
