@@ -11,7 +11,7 @@ import com.prisma.prismavi.ui.splash.SplashScreen
 import com.prisma.prismavi.core.permissions.PermissionManager
 
 class ViewManager(
-    private val activity: ComponentActivity,
+    activity: ComponentActivity,
     private val permissionManager: PermissionManager
 ) {
 
@@ -29,8 +29,10 @@ class ViewManager(
         when (currentScreen) {
             is Screen.Splash -> SplashScreen(onSplashFinished = { checkAndRequestPermissions() })
             is Screen.Camera -> CameraPreview()
-            // Adicione outras telas aqui, por exemplo:
+
+            //TODO Adicione outras telas aqui, por exemplo:
             // is Screen.Settings -> SettingsScreen()
+
         }
     }
 

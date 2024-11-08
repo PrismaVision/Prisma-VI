@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import com.prisma.prismavi.ui.camera.overlay.bottomsheet.BottomSheetPreview
 import java.io.File
 
 @Composable
@@ -42,7 +43,8 @@ fun CameraPreview() {
     } else {
         AndroidView(factory = {
             previewView
-        }, modifier = Modifier.fillMaxSize()
+        }, modifier = Modifier
+            .fillMaxSize()
             .pointerInput(Unit) {
                 detectTapGestures(onTap = { offset ->
                     capturePhoto(imageCapture, context, offset) { uri, file ->
@@ -77,6 +79,7 @@ fun CameraPreview() {
             }
         }, ContextCompat.getMainExecutor(context))
     }
+    BottomSheetPreview()
 }
 
 private fun capturePhoto(
