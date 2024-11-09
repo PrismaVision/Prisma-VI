@@ -45,7 +45,6 @@ fun ColorDetails() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.Black.copy(0.3f))
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -194,7 +193,6 @@ fun ColorDetails() {
 
                     Box(
                         modifier = Modifier
-                            .height(250.dp)
                             .clip(RoundedCornerShape(15.dp))
                             .background(Color.Gray.copy(alpha = 0.3f))
                             .padding(10.dp)
