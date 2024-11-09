@@ -154,17 +154,16 @@ fun ColorDetails() {
                         modifier = Modifier.padding(
                             top = 8.dp,
                             bottom = 8.dp
-                        ) // Espaçamento acima e abaixo do texto
+                        )
                     )
 
-                    // Box para "Color Terminology"
                     Box(
                         modifier = Modifier
-                            .height(70.dp) // Altura do Box
+                            .height(70.dp)
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(15.dp)) // Define a forma arredondada dos cantos
-                            .background(Color.Gray.copy(alpha = 0.3f)) // Aplica o background cinza
-                            .padding(16.dp) // Espaçamento interno
+                            .clip(RoundedCornerShape(15.dp))
+                            .background(Color.Gray.copy(alpha = 0.3f))
+                            .padding(16.dp)
                     ) {
                         Text(
                             text = colorTerminology,
@@ -175,14 +174,13 @@ fun ColorDetails() {
                     }
                 }
 
-                // Coluna para "Color Match"
                 Column(
                     modifier = Modifier
-                        .weight(1f) // Faz a coluna ocupar metade do espaço disponível
+                        .weight(1f)
                         .height(210.dp)
-                        .padding(start = 10.dp) // Espaçamento à esquerda
+                        .padding(start = 10.dp)
                 ) {
-                    // Texto "Color Match"
+
                     Text(
                         text = "Color Match",
                         fontSize = 16.sp,
@@ -227,7 +225,7 @@ fun ColorDetails() {
 
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically // Alinha verticalmente ao centro
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Box(
                                     modifier = Modifier
@@ -237,12 +235,11 @@ fun ColorDetails() {
                                         .padding(10.dp)
                                 )
 
-                                // Texto para o segundo colorMatch
                                 Text(
-                                    text = colorMatch2, // Título do Box
+                                    text = colorMatch2,
                                     fontSize = 14.sp,
                                     modifier = Modifier
-                                        .padding(start = 4.dp) // Espaçamento à esquerda do texto
+                                        .padding(start = 4.dp)
                                 )
                             }
                         }
