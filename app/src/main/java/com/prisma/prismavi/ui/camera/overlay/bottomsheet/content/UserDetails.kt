@@ -1,7 +1,7 @@
 package com.prisma.prismavi.ui.camera.overlay.bottomsheet.content
 
+import android.widget.Button
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +9,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.Add
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +26,13 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun UserDetails(){
+
+    var palleteList = listOf("Pallete1","Pallete2","Pallete3")
+
+    val onAddPallete: () -> Unit = {
+        palleteList += "Pallete${palleteList.size - 1}"
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,7 +48,6 @@ fun UserDetails(){
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
 
-
         ){
             Text(
                 text = "{Tittle variable}",
@@ -44,8 +55,69 @@ fun UserDetails(){
                 modifier = Modifier
             )
         }
+        Row(){
+            Column {
+                Text(
+                    text = "{Tittle variable}",
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(
+                        top = 8.dp,
+                        bottom = 8.dp
+                    )
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(15.dp))
+                        .background(Color.Gray.copy(alpha = 0.3f))
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Column {
+                        for (pallete in palleteList)
+                        {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(60.dp)
+                                    .clip(RoundedCornerShape(11.dp))
+                                    .background(Color.Gray.copy(alpha = 0.3f))
+                                    .padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text(
+                                    text = pallete,
+                                )
+                            }
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .height(15.dp)
+                            ){}
+                        }
+                        Button(
+                            onClick = onAddPallete,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(55.dp)
+                                .clip(RoundedCornerShape(11.dp))
+                                .background(Color.Green.copy(alpha = 0.2f))
+                            ,
+                            shape = RoundedCornerShape(25),
+                            colors = ButtonDefaults.buttonColors(containerColor = androidx.compose.ui.graphics.Color.Transparent)
+
+                        ) {
+                            Icon(
+                                imageVector = Icons.Sharp.Add,
+                                contentDescription = "Add",
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }
+
 
 @Preview
 @Composable
