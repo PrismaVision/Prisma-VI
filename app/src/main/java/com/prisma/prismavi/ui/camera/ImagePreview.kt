@@ -5,23 +5,29 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
+import androidx.compose.ui.platform.LocalContext
+import coil.request.ImageRequest
+import coil.size.Scale
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Close
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import java.io.File
 
 @Composable
-fun ImagePreview(imageUri: Uri, imageFile: File, onClose: () -> Unit) {
+fun ImagePreview(
+    imageUri: Uri,
+    onClose: () -> Unit
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = rememberAsyncImagePainter(imageUri),
@@ -41,9 +47,11 @@ fun ImagePreview(imageUri: Uri, imageFile: File, onClose: () -> Unit) {
             Icon(
                 imageVector = Icons.Sharp.Close,
                 contentDescription = "Discart",
-                tint = androidx.compose.ui.graphics.Color.White
+                tint = androidx.compose.ui.graphics.Color.Black
             )
         }
     }
 }
+
+
 

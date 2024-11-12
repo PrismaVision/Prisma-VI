@@ -6,9 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import com.prisma.prismavi.ui.camera.CameraPreview
 import com.prisma.prismavi.ui.splash.SplashScreen
 import com.prisma.prismavi.core.permissions.PermissionManager
+import com.prisma.prismavi.ui.camera.CameraScreen
 
 class ViewManager(
     activity: ComponentActivity,
@@ -28,7 +28,9 @@ class ViewManager(
     private fun RenderScreen() {
         when (currentScreen) {
             is Screen.Splash -> SplashScreen(onSplashFinished = { checkAndRequestPermissions() })
-            is Screen.Camera -> CameraPreview()
+            is Screen.Camera -> CameraScreen(onImageCaptured = { bitmap ->
+                // Ações com a imagem capturada (congelada)
+            })
 
             //TODO Adicione outras telas aqui, por exemplo:
             // is Screen.Settings -> SettingsScreen()
