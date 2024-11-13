@@ -17,9 +17,6 @@ class BottomSheetViewManager {
             is BottomSheetScreen.ColorDetails -> ColorDetails()
             is BottomSheetScreen.UserDetails -> UserDetails()
 
-            //TODO Adicione outras telas aqui, por exemplo:
-            // is Screen.Settings -> SettingsScreen()
-
         }
     }
 

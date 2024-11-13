@@ -1,9 +1,11 @@
 package com.prisma.prismavi.ui.camera.overlay.bottomsheet.content
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,9 +30,11 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun UserDetails(){
 
-    val colorList = listOf("#000000","#000001","#000011")
+    val username: String = "Usuário!"
 
-    var palleteList = listOf("Pallete1","Pallete2","Pallete3")
+    val colorList = listOf("#000000","#9AEAC5","#007CC0")
+
+    var palleteList = listOf("Paleta #1","Paleta #2","Paleta #3")
 
     val onAddPallete: () -> Unit = {
         palleteList += "Pallete${palleteList.size - 1}"
@@ -52,16 +57,21 @@ fun UserDetails(){
 
         ){
             Text(
-                text = "{Tittle variable}",
+                text = "Seja Bem Vindo, $username",
                 fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
             )
         }
+
+        Spacer(Modifier.height(30.dp))
+
         Row(){
             Column {
                 Text(
-                    text = "{Tittle variable}",
+                    text = "Paletas",
                     fontSize = 16.sp,
+                    fontWeight = FontWeight.W600,
                     modifier = Modifier.padding(
                         top = 8.dp,
                         bottom = 8.dp
@@ -89,11 +99,14 @@ fun UserDetails(){
                             ) {
                                 Text(
                                     text = pallete,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.W600
+
                                 )
                             }
                             Row(modifier = Modifier
                                 .fillMaxWidth()
-                                .height(15.dp)
+                                .height(8.dp)
                             ){}
                         }
                         Button(
@@ -102,7 +115,7 @@ fun UserDetails(){
                                 .fillMaxWidth()
                                 .height(55.dp)
                                 .clip(RoundedCornerShape(11.dp))
-                                .background(Color.Green.copy(alpha = 0.2f))
+                                .background(Color.Green.copy(alpha = 0.09f))
                             ,
                             shape = RoundedCornerShape(25),
                             colors = ButtonDefaults.buttonColors(containerColor = androidx.compose.ui.graphics.Color.Transparent)
@@ -117,11 +130,12 @@ fun UserDetails(){
                 }
             }
         }
-        Row(){
+        Row {
             Column {
                 Text(
-                    text = "{Tittle variable}",
+                    text = "Histórico de Cores",
                     fontSize = 16.sp,
+                    fontWeight = FontWeight.W600,
                     modifier = Modifier.padding(
                         top = 8.dp,
                         bottom = 8.dp
@@ -133,48 +147,42 @@ fun UserDetails(){
                         .clip(RoundedCornerShape(15.dp))
                         .background(Color.Gray.copy(alpha = 0.3f))
                         .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Column {
-                        for (color in colorList)
-                        {
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp) // espaçamento entre itens
+                    ) {
+                        for (color in colorList) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clip(RoundedCornerShape(11.dp))
                                     .background(Color.Gray.copy(alpha = 0.3f))
-                                    .padding(16.dp),
+                                    .padding(10.dp),
                                 verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(45.dp)
-                                            .clip(RoundedCornerShape(10.dp))
-                                            .background(parseColor(color))
-                                            .padding(10.dp)
-                                    )
+                                Box(
+                                    modifier = Modifier
+                                        .size(35.dp)
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .background(parseColor(color))
+                                )
 
-                                    Text(
-                                        text = color,
-                                        fontSize = 14.sp,
-                                        modifier = Modifier
-                                            .padding(start = 4.dp)
-                                    )
-                                }
+                                Text(
+                                    text = color,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.W600,
+                                    modifier = Modifier.align(Alignment.CenterVertically)
+                                )
                             }
-                            Row(modifier = Modifier
-                                .fillMaxWidth()
-                                .height(15.dp)
-                            ){}
                         }
                     }
                 }
             }
         }
+
     }
 }
 
