@@ -28,15 +28,15 @@ fun parseColor(colorString: String): Color {
     return Color(colorLong or 0xFF000000)
 }
 
-val colorName: String = "Color Name"
-val colorTemperatureName: String = "HOT"
+val colorName: String = "Nome da Cor"
+val colorTemperatureName: String = "Quente"
 val hexCode: String = "FFFFFF"
 val formatedHexCode: Color = parseColor(hexCode)
 val colorHex: String = "HEX: #$hexCode"
 val colorRgb: String = "RGB: (0, 0, 0)"
 val colorRyb: String = "RYB: (0%, 0%, 0%)"
-val descriptionText: String = "The color HOT embodies an intense and vibrant hue that evokes feelings of warmth and energy. It radiates a bold, fiery essence, reminiscent of a blazing sunset or glowing embers. This captivating shade captures attention and ignites passion, making it perfect for designs that aim to inspire excitement and vitality.\""
-val colorTerminology: String = "Primary"
+val descriptionText: String = "A cor $colorTemperatureName incorpora uma tonalidade intensa e vibrante que evoca sensações de calor e energia. Ele irradia uma essência ousada e ardente, que lembra um pôr do sol escaldante ou brasas brilhantes. Este tom cativante capta a atenção e desperta a paixão, tornando-o perfeito para designs que visam inspirar excitação e vitalidade.\""
+val colorTerminology: String = "Primária"
 val colorMatch1: String = "#000000"
 val colorMatch2: String = "#111111"
 
@@ -125,7 +125,7 @@ fun ColorDetails() {
                         .padding(end = 8.dp) // Espaçamento à direita
                 ) {
                     Text(
-                        text = "Color Temperature",
+                        text = "Temperatura da Cor",
                         fontSize = 16.sp,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
@@ -149,7 +149,7 @@ fun ColorDetails() {
 
                     // Texto "Color Terminology"
                     Text(
-                        text = "Color Terminology",
+                        text = "Terminologia da Cor",
                         fontSize = 16.sp,
                         modifier = Modifier.padding(
                             top = 8.dp,
@@ -177,12 +177,11 @@ fun ColorDetails() {
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .height(210.dp)
+                        .height(203.dp)
                         .padding(start = 10.dp)
                 ) {
-
                     Text(
-                        text = "Color Match",
+                        text = "Cores Correspondentes",
                         fontSize = 16.sp,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
@@ -217,11 +216,11 @@ fun ColorDetails() {
                                     text = colorMatch1, 
                                     fontSize = 14.sp,
                                     modifier = Modifier
-                                        .padding(start = 4.dp) 
+                                        .padding(start = 6.dp)
                                 )
                             }
 
-                            Spacer(modifier = Modifier.height(20.dp))
+                            Spacer(modifier = Modifier.height(25.dp))
 
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -239,7 +238,7 @@ fun ColorDetails() {
                                     text = colorMatch2,
                                     fontSize = 14.sp,
                                     modifier = Modifier
-                                        .padding(start = 4.dp)
+                                        .padding(start = 6.dp)
                                 )
                             }
                         }
@@ -256,7 +255,7 @@ fun ColorDetails() {
         ) {
             // Texto acima da Column de detalhes
             Text(
-                text = "Description",
+                text = "Descrição",
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 8.dp) // Espaçamento abaixo do texto
             )
