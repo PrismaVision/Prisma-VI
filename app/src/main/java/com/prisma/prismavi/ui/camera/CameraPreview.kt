@@ -1,5 +1,6 @@
 package com.prisma.prismavi.ui.camera
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Environment.DIRECTORY_PICTURES
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
@@ -30,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -41,10 +44,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
-import com.prisma.prismavi.ui.camera.overlay.bottomsheet.BottomSheetPreview
 import java.io.File
 import kotlin.math.roundToInt
 
+@SuppressLint("ClickableViewAccessibility")
 @Composable
 fun CameraPreview() {
     val context = LocalContext.current
@@ -66,7 +69,7 @@ fun CameraPreview() {
     // Preview da câmera (view da câmera)
     val previewView = remember { PreviewView(context) }
 
-    // Inicializa a câmera e captura a foto
+    // Inicializa a câmera e captura a foto dentro do LaunchedEffect
     LaunchedEffect(context) {
         val cameraProvider = ProcessCameraProvider.getInstance(context).get()
 
@@ -128,6 +131,7 @@ fun CameraPreview() {
                     imageFile = file,
                     boxOffset = boxOffset,
                     onBoxMoved = { newOffset ->
+                        // Atualiza a posição do box com base no movimento de arraste
                         boxOffset = newOffset
                     },
                     onClose = {
@@ -143,7 +147,6 @@ fun CameraPreview() {
         // Caso contrário, exibe o preview da câmera
         AndroidView(factory = { previewView }, modifier = Modifier.fillMaxSize())
     }
-    BottomSheetPreview()
 }
 
 // Função para capturar a foto
@@ -173,6 +176,8 @@ private fun createFile(context: Context): File {
     return File(directory, "${System.currentTimeMillis()}.jpg")
 }
 
+
+
 // Composable para exibir a imagem com o box arrastável
 @Composable
 fun ImagePreview(imageUri: Uri, imageFile: File, boxOffset: Offset, onBoxMoved: (Offset) -> Unit, onClose: () -> Unit) {
@@ -184,12 +189,11 @@ fun ImagePreview(imageUri: Uri, imageFile: File, boxOffset: Offset, onBoxMoved: 
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-
         // Box arrastável (pode ser um quadrado, círculo, ou qualquer forma)
         Box(
             modifier = Modifier
                 .offset { IntOffset(boxOffset.x.roundToInt(), boxOffset.y.roundToInt()) }
-                .size(100.dp) // Defina o tamanho da box (100x100 dp por exemplo)
+                .size(50.dp) // Defina o tamanho da box (100x100 dp por exemplo)
                 .background(Color.Red.copy(alpha = 0.5f))
                 .pointerInput(Unit) {
                     detectDragGestures { _, dragAmount ->
@@ -197,6 +201,7 @@ fun ImagePreview(imageUri: Uri, imageFile: File, boxOffset: Offset, onBoxMoved: 
                         onBoxMoved(boxOffset + dragAmount)
                     }
                 }
+                .clip(RoundedCornerShape(15.dp))
         )
 
         // Botão para fechar a visualização da imagem e voltar para a câmera
@@ -217,7 +222,6 @@ fun ImagePreview(imageUri: Uri, imageFile: File, boxOffset: Offset, onBoxMoved: 
         }
     }
 }
-
 
 
 
