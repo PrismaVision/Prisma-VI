@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
+import com.prisma.prismavi.ui.camera.overlay.bottomsheet.BottomSheetPreview
 import java.io.File
 import kotlin.math.roundToInt
 
@@ -121,6 +122,7 @@ fun CameraPreview() {
     } else {
         AndroidView(factory = { previewView }, modifier = Modifier.fillMaxSize())
     }
+    BottomSheetPreview()
 }
 
 private fun capturePhoto(
