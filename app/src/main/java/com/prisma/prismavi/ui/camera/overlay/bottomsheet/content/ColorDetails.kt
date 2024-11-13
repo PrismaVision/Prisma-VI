@@ -28,15 +28,15 @@ fun parseColor(colorString: String): Color {
     return Color(colorLong or 0xFF000000)
 }
 
-val colorName: String = "Color Name"
-val colorTemperatureName: String = "HOT"
+val colorName: String = "Nome da Cor"
+val colorTemperatureName: String = "Quente"
 val hexCode: String = "FFFFFF"
 val formatedHexCode: Color = parseColor(hexCode)
 val colorHex: String = "HEX: #$hexCode"
 val colorRgb: String = "RGB: (0, 0, 0)"
 val colorRyb: String = "RYB: (0%, 0%, 0%)"
-val descriptionText: String = "The color HOT embodies an intense and vibrant hue that evokes feelings of warmth and energy. It radiates a bold, fiery essence, reminiscent of a blazing sunset or glowing embers. This captivating shade captures attention and ignites passion, making it perfect for designs that aim to inspire excitement and vitality.\""
-val colorTerminology: String = "Primary"
+val descriptionText: String = "A cor $colorTemperatureName incorpora uma tonalidade intensa e vibrante que evoca sensações de calor e energia. Ele irradia uma essência ousada e ardente, que lembra um pôr do sol escaldante ou brasas brilhantes. Este tom cativante capta a atenção e desperta a paixão, tornando-o perfeito para designs que visam inspirar excitação e vitalidade.\""
+val colorTerminology: String = "Primária"
 val colorMatch1: String = "#000000"
 val colorMatch2: String = "#111111"
 
@@ -125,7 +125,7 @@ fun ColorDetails() {
                         .padding(end = 8.dp) // Espaçamento à direita
                 ) {
                     Text(
-                        text = "Color Temperature",
+                        text = "Temperatura da Cor",
                         fontSize = 16.sp,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
@@ -149,22 +149,21 @@ fun ColorDetails() {
 
                     // Texto "Color Terminology"
                     Text(
-                        text = "Color Terminology",
+                        text = "Terminologia da Cor",
                         fontSize = 16.sp,
                         modifier = Modifier.padding(
                             top = 8.dp,
                             bottom = 8.dp
-                        ) // Espaçamento acima e abaixo do texto
+                        )
                     )
 
-                    // Box para "Color Terminology"
                     Box(
                         modifier = Modifier
-                            .height(70.dp) // Altura do Box
+                            .height(70.dp)
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(15.dp)) // Define a forma arredondada dos cantos
-                            .background(Color.Gray.copy(alpha = 0.3f)) // Aplica o background cinza
-                            .padding(16.dp) // Espaçamento interno
+                            .clip(RoundedCornerShape(15.dp))
+                            .background(Color.Gray.copy(alpha = 0.3f))
+                            .padding(16.dp)
                     ) {
                         Text(
                             text = colorTerminology,
@@ -175,16 +174,14 @@ fun ColorDetails() {
                     }
                 }
 
-                // Coluna para "Color Match"
                 Column(
                     modifier = Modifier
-                        .weight(1f) // Faz a coluna ocupar metade do espaço disponível
-                        .height(210.dp)
-                        .padding(start = 10.dp) // Espaçamento à esquerda
+                        .weight(1f)
+                        .height(203.dp)
+                        .padding(start = 10.dp)
                 ) {
-                    // Texto "Color Match"
                     Text(
-                        text = "Color Match",
+                        text = "Cores Correspondentes",
                         fontSize = 16.sp,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
@@ -219,15 +216,15 @@ fun ColorDetails() {
                                     text = colorMatch1, 
                                     fontSize = 14.sp,
                                     modifier = Modifier
-                                        .padding(start = 4.dp) 
+                                        .padding(start = 6.dp)
                                 )
                             }
 
-                            Spacer(modifier = Modifier.height(20.dp))
+                            Spacer(modifier = Modifier.height(25.dp))
 
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically // Alinha verticalmente ao centro
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Box(
                                     modifier = Modifier
@@ -237,12 +234,11 @@ fun ColorDetails() {
                                         .padding(10.dp)
                                 )
 
-                                // Texto para o segundo colorMatch
                                 Text(
-                                    text = colorMatch2, // Título do Box
+                                    text = colorMatch2,
                                     fontSize = 14.sp,
                                     modifier = Modifier
-                                        .padding(start = 4.dp) // Espaçamento à esquerda do texto
+                                        .padding(start = 6.dp)
                                 )
                             }
                         }
@@ -259,7 +255,7 @@ fun ColorDetails() {
         ) {
             // Texto acima da Column de detalhes
             Text(
-                text = "Description",
+                text = "Descrição",
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 8.dp) // Espaçamento abaixo do texto
             )
