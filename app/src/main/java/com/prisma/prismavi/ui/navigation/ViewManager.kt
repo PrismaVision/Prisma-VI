@@ -30,11 +30,7 @@ class ViewManager(
         when (val screen = currentScreen) {
             is Screen.Splash -> SplashScreen(onSplashFinished = { checkAndRequestPermissions() })
             is Screen.Camera -> CameraPreview()
-            is Screen.FrozenImage -> ImagePreview(
-                imageUri = screen.imageUri,
-                imageFile = screen.imageFile,
-                onClose = screen.onClose
-            )
+
             // Adicione novas telas aqui, por exemplo:
             // is Screen.Settings -> SettingsScreen()
         }
