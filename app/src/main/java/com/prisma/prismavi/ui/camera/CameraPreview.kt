@@ -53,23 +53,14 @@ fun CameraPreview() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    // Estado para armazenar a URI e o arquivo da foto capturada
     var capturedImageUri by remember { mutableStateOf<Uri?>(null) }
     var capturedImageFile by remember { mutableStateOf<File?>(null) }
-
-    // Estado para armazenar a posição do toque na tela
     var touchPosition by remember { mutableStateOf<Pair<Float, Float>?>(null) }
-
-    // Estado para controlar a posição inicial da box arrastável
     var boxOffset by remember { mutableStateOf(Offset(0f, 0f)) }
-
-    // Estado para controlar se a imagem está sendo exibida
     var isImagePreviewActive by remember { mutableStateOf(false) }
 
-    // Preview da câmera (view da câmera)
     val previewView = remember { PreviewView(context) }
 
-    // Inicializa a câmera e captura a foto dentro do LaunchedEffect
     LaunchedEffect(context) {
         val cameraProvider = ProcessCameraProvider.getInstance(context).get()
 
@@ -78,7 +69,6 @@ fun CameraPreview() {
         }
 
         val imageCapture = ImageCapture.Builder().build()
-
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
         try {
@@ -90,27 +80,18 @@ fun CameraPreview() {
                 imageCapture
             )
 
-            // Detecta o toque na tela para capturar a foto
             previewView.setOnTouchListener { _, event ->
-                // Captura a foto e armazena a posição do toque
                 val x = event.x
                 val y = event.y
-
-                // Armazena a posição do toque para posicionar o box
                 touchPosition = Pair(x, y)
 
-                // Chama a função para capturar a foto
                 capturePhoto(imageCapture, context) { uri, file ->
                     capturedImageUri = uri
                     capturedImageFile = file
-
-                    // Quando a imagem é capturada, mostramos a imagem
                     isImagePreviewActive = true
 
-                    // Define a posição do box com base no toque (centro do toque)
                     touchPosition?.let { (xTouch, yTouch) ->
-                        // Coloca a box no centro do ponto de toque
-                        boxOffset = Offset(xTouch - 50f, yTouch - 50f) // Subtrai a metade do tamanho da box
+                        boxOffset = Offset(xTouch - 50f, yTouch - 50f)
                     }
                 }
                 true
@@ -121,21 +102,15 @@ fun CameraPreview() {
         }
     }
 
-    // Se a imagem está sendo visualizada, exibe a composable da imagem
     if (isImagePreviewActive) {
         capturedImageUri?.let { uri ->
             capturedImageFile?.let { file ->
-                // Exibe a imagem e o box arrastável
                 ImagePreview(
                     imageUri = uri,
                     imageFile = file,
                     boxOffset = boxOffset,
-                    onBoxMoved = { newOffset ->
-                        // Atualiza a posição do box com base no movimento de arraste
-                        boxOffset = newOffset
-                    },
+                    onBoxMoved = { newOffset -> boxOffset = newOffset },
                     onClose = {
-                        // Resetando o estado ao fechar a imagem
                         isImagePreviewActive = false
                         capturedImageUri = null
                         capturedImageFile = null
@@ -144,12 +119,10 @@ fun CameraPreview() {
             }
         }
     } else {
-        // Caso contrário, exibe o preview da câmera
         AndroidView(factory = { previewView }, modifier = Modifier.fillMaxSize())
     }
 }
 
-// Função para capturar a foto
 private fun capturePhoto(
     imageCapture: ImageCapture,
     context: Context,
@@ -170,44 +143,35 @@ private fun capturePhoto(
     })
 }
 
-// Função para criar o arquivo da foto
 private fun createFile(context: Context): File {
     val directory = context.getExternalFilesDir(DIRECTORY_PICTURES)
     return File(directory, "${System.currentTimeMillis()}.jpg")
 }
 
-
-
-// Composable para exibir a imagem com o box arrastável
 @Composable
 fun ImagePreview(imageUri: Uri, imageFile: File, boxOffset: Offset, onBoxMoved: (Offset) -> Unit, onClose: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
-        // Exibe a imagem capturada
         Image(
             painter = rememberAsyncImagePainter(imageUri),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-        // Box arrastável (pode ser um quadrado, círculo, ou qualquer forma)
         Box(
             modifier = Modifier
                 .offset { IntOffset(boxOffset.x.roundToInt(), boxOffset.y.roundToInt()) }
-                .size(50.dp) // Defina o tamanho da box (100x100 dp por exemplo)
+                .size(50.dp)
                 .background(Color.Red.copy(alpha = 0.5f))
                 .pointerInput(Unit) {
                     detectDragGestures { _, dragAmount ->
-                        // Atualiza a posição do box com base no movimento de arraste
                         onBoxMoved(boxOffset + dragAmount)
                     }
                 }
                 .clip(RoundedCornerShape(15.dp))
         )
 
-        // Botão para fechar a visualização da imagem e voltar para a câmera
         IconButton(
             onClick = {
-                // Resetando o estado ao fechar a imagem
                 onClose()
             },
             modifier = Modifier
@@ -215,13 +179,10 @@ fun ImagePreview(imageUri: Uri, imageFile: File, boxOffset: Offset, onBoxMoved: 
                 .padding(16.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.Close, // Ícone de fechar da biblioteca de ícones do Compose
+                imageVector = Icons.Default.Close,
                 contentDescription = "Fechar",
                 tint = Color.White
             )
         }
     }
 }
-
-
-
