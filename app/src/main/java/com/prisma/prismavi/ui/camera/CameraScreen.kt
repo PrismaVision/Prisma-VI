@@ -1,15 +1,22 @@
 package com.prisma.prismavi.ui.camera
 
-
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.camera.core.*
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
@@ -51,12 +58,11 @@ fun CameraScreen(onImageCaptured: (Bitmap) -> Unit) {
             modifier = Modifier
                 .fillMaxSize()
                 .clickable {
-                    // Captura a imagem no toque
                     imageCapture.takePicture(
                         ContextCompat.getMainExecutor(context),
                         object : ImageCapture.OnImageCapturedCallback() {
                             override fun onCaptureSuccess(imageProxy: ImageProxy) {
-                                val bitmap = imageProxy.toBitmap() // Função que converte para Bitmap
+                                val bitmap = imageProxy.toBitmap()
                                 imageProxy.close()
                                 capturedImage = bitmap
                                 onImageCaptured(bitmap)
@@ -71,7 +77,6 @@ fun CameraScreen(onImageCaptured: (Bitmap) -> Unit) {
     }
 }
 
-// Função auxiliar para converter ImageProxy em Bitmap
 fun ImageProxy.toBitmap(): Bitmap {
     val buffer = planes[0].buffer
     val bytes = ByteArray(buffer.remaining())
