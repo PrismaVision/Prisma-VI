@@ -37,7 +37,6 @@ fun UserDetails() {
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
 
-    // Ajuste a altura da sheet para 85% da altura da tela, dando um pouco mais de espaço na parte inferior
     val sheetHeight = screenHeight * 0.85f
 
     val username = "Usuário!"
@@ -53,14 +52,14 @@ fun UserDetails() {
             .height(sheetHeight)
             .fillMaxWidth()
             .padding(16.dp)
-            .verticalScroll(rememberScrollState()), // Tornar a BottomSheet rolável
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.Start
     ) {
         // Cabeçalho do usuário
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(screenHeight * 0.1f) // Altura responsiva de 10% da tela
+                .height(screenHeight * 0.1f)
                 .clip(RoundedCornerShape(15.dp))
                 .background(Color.Gray.copy(alpha = 0.3f))
                 .padding(16.dp),
@@ -68,14 +67,13 @@ fun UserDetails() {
         ) {
             Text(
                 text = "Seja Bem Vindo, $username",
-                fontSize = (screenWidth * 0.05f).value.sp, // Tamanho da fonte proporcional
+                fontSize = (screenWidth * 0.05f).value.sp,
                 fontWeight = FontWeight.Bold,
             )
         }
 
-        Spacer(Modifier.height(screenHeight * 0.02f)) // Espaçamento de 2% da altura da tela
+        Spacer(Modifier.height(screenHeight * 0.02f))
 
-        // Seção das paletas
         Row {
             Column {
                 Text(
@@ -135,9 +133,8 @@ fun UserDetails() {
             }
         }
 
-        Spacer(Modifier.height(screenHeight * 0.02f)) // Espaçamento adicional
+        Spacer(Modifier.height(screenHeight * 0.02f))
 
-        // Histórico de cores
         Row {
             Column {
                 Text(

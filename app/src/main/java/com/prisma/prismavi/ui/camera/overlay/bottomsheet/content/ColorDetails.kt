@@ -55,10 +55,10 @@ fun ColorDetails() {
             .height(sheetHeight)
             .fillMaxWidth()
             .padding(16.dp)
-            .verticalScroll(rememberScrollState()), // Habilita rolagem vertical
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Seção com o nome da cor e o quadrado de cor
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -99,7 +99,6 @@ fun ColorDetails() {
             }
         }
 
-        // Seção de temperatura e terminologia
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -224,7 +223,6 @@ fun ColorDetails() {
             }
         }
 
-        // Seção de descrição
         Column(
             modifier = Modifier
                 .fillMaxWidth()
