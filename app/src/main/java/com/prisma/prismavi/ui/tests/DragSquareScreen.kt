@@ -61,27 +61,29 @@ fun DragSquareScreen() {
                     }
                 }
         ) {
-            Box(
-                modifier = Modifier
-                    .offset {
-                        IntOffset(squarePosition.value.x.toInt(), squarePosition.value.y.toInt())
-                    }
-                    .size(squareSize)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.Blue)
-                    .pointerInput(Unit) {
-                        detectDragGestures { change, dragAmount ->
-                            change.consume()
-                            val newX = (squarePosition.value.x + dragAmount.x).coerceIn(
-                                0f, screenSize.value.width - squareSize.toPx()
-                            )
-                            val newY = (squarePosition.value.y + dragAmount.y).coerceIn(
-                                0f, screenSize.value.height - squareSize.toPx()
-                            )
-                            squarePosition.value = Offset(newX, newY)
+            if(squarePosition.value != Offset.Zero){
+                Box(
+                    modifier = Modifier
+                        .offset {
+                            IntOffset(squarePosition.value.x.toInt(), squarePosition.value.y.toInt())
                         }
-                    }
-            )
+                        .size(squareSize)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Color.Blue)
+                        .pointerInput(Unit) {
+                            detectDragGestures { change, dragAmount ->
+                                change.consume()
+                                val newX = (squarePosition.value.x + dragAmount.x).coerceIn(
+                                    0f, screenSize.value.width - squareSize.toPx()
+                                )
+                                val newY = (squarePosition.value.y + dragAmount.y).coerceIn(
+                                    0f, screenSize.value.height - squareSize.toPx()
+                                )
+                                squarePosition.value = Offset(newX, newY)
+                            }
+                        }
+                )
+            }
         }
         BottomSheetPreview()
     }
