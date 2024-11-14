@@ -41,49 +41,52 @@ fun DragSquareScreen() {
         ).show()
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .onGloballyPositioned { coordinates ->
-                screenSize.value = coordinates.size.toSize()
-            }
-            .background(Color.White)
-            .pointerInput(Unit) {
-                detectTapGestures { tapOffset ->
-                    val newX = (tapOffset.x - squareSize.toPx() / 2).coerceIn(
-                        0f, screenSize.value.width - squareSize.toPx()
-                    )
-                    val newY = (tapOffset.y - squareSize.toPx() / 2).coerceIn(
-                        0f, screenSize.value.height - squareSize.toPx()
-                    )
-                    squarePosition.value = Offset(newX, newY)
-                }
-            }
-    ) {
+    Box{
         Box(
             modifier = Modifier
-                .offset {
-                    IntOffset(squarePosition.value.x.toInt(), squarePosition.value.y.toInt())
+                .fillMaxSize()
+                .onGloballyPositioned { coordinates ->
+                    screenSize.value = coordinates.size.toSize()
                 }
-                .size(squareSize)
-                .clip(RoundedCornerShape(10.dp))
-                .background(Color.Blue)
+                .background(Color.White)
                 .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-                        change.consume()
-                        val newX = (squarePosition.value.x + dragAmount.x).coerceIn(
+                    detectTapGestures { tapOffset ->
+                        val newX = (tapOffset.x - squareSize.toPx() / 2).coerceIn(
                             0f, screenSize.value.width - squareSize.toPx()
                         )
-                        val newY = (squarePosition.value.y + dragAmount.y).coerceIn(
+                        val newY = (tapOffset.y - squareSize.toPx() / 2).coerceIn(
                             0f, screenSize.value.height - squareSize.toPx()
                         )
                         squarePosition.value = Offset(newX, newY)
                     }
                 }
-        )
+        ) {
+            Box(
+                modifier = Modifier
+                    .offset {
+                        IntOffset(squarePosition.value.x.toInt(), squarePosition.value.y.toInt())
+                    }
+                    .size(squareSize)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color.Blue)
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+                            change.consume()
+                            val newX = (squarePosition.value.x + dragAmount.x).coerceIn(
+                                0f, screenSize.value.width - squareSize.toPx()
+                            )
+                            val newY = (squarePosition.value.y + dragAmount.y).coerceIn(
+                                0f, screenSize.value.height - squareSize.toPx()
+                            )
+                            squarePosition.value = Offset(newX, newY)
+                        }
+                    }
+            )
+        }
         BottomSheetPreview()
     }
 }
+
 
 @Preview
 @Composable
