@@ -1,5 +1,6 @@
 package com.prisma.prismavi.ui.tests
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -18,19 +20,26 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.prisma.prismavi.ui.camera.overlay.bottomsheet.BottomSheetPreview
 
 @Composable
-fun DragSquareScreen(
-
-) {
-    val offsetTest: Offset = Offset.Zero
+fun DragSquareScreen() {
     val screenSize = remember { mutableStateOf(Size.Zero) }
     val squarePosition = remember { mutableStateOf(Offset.Zero) }
     val squareSize = 55.dp
+    val context = LocalContext.current
+
+    LaunchedEffect(squarePosition.value) {
+        kotlinx.coroutines.delay(500)
+        Toast.makeText(
+            context, "Posição do quadrado: (${squarePosition.value.x}, ${squarePosition.value.y})", Toast.LENGTH_SHORT
+        ).show()
+    }
 
     Box(
         modifier = Modifier
@@ -38,10 +47,9 @@ fun DragSquareScreen(
             .onGloballyPositioned { coordinates ->
                 screenSize.value = coordinates.size.toSize()
             }
-            .background(Color.Transparent)
+            .background(Color.White)
             .pointerInput(Unit) {
                 detectTapGestures { tapOffset ->
-                    // Calcula nova posição centralizada no toque, mantendo o quadrado dentro dos limites
                     val newX = (tapOffset.x - squareSize.toPx() / 2).coerceIn(
                         0f, screenSize.value.width - squareSize.toPx()
                     )
@@ -73,6 +81,7 @@ fun DragSquareScreen(
                     }
                 }
         )
+        BottomSheetPreview()
     }
 }
 
