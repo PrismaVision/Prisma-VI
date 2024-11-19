@@ -35,10 +35,12 @@ fun DragSquareScreen() {
     val context = LocalContext.current
 
     LaunchedEffect(squarePosition.value) {
-        kotlinx.coroutines.delay(500)
-        Toast.makeText(
-            context, "Posição do quadrado: (${squarePosition.value.x}, ${squarePosition.value.y})", Toast.LENGTH_SHORT
-        ).show()
+        kotlinx.coroutines.delay(700)
+        if(squarePosition.value != Offset.Zero){
+            Toast.makeText(
+                context, "Posição do quadrado: (${squarePosition.value.x}, ${squarePosition.value.y})", Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     Box{
