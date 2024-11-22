@@ -23,7 +23,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -44,7 +43,7 @@ fun DragSquareScreen() {
     val screenSize = remember { mutableStateOf(Size.Zero) }
     val squarePosition = remember { mutableStateOf(Offset.Zero) }
     val squareSize = 45.dp
-    val squareColor = remember { mutableStateOf(Color.Blue) }
+    val squareColor = remember { mutableStateOf(Color.Transparent) }
     val density = LocalDensity.current
     val context = LocalContext.current
     val activity = context as? ComponentActivity
@@ -54,20 +53,19 @@ fun DragSquareScreen() {
         if (squarePosition.value != Offset.Zero) {
             Toast.makeText(
                 context,
-                "Posição do quadrado: (${squarePosition.value.x}, ${squarePosition.value.y})",
+                "${squareColor.value}",
                 Toast.LENGTH_SHORT
             ).show()
         }
     }
-    Box{
-
+    Box {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .onGloballyPositioned { coordinates ->
                     screenSize.value = coordinates.size.toSize()
                 }
-                .background(Color.White)
+                .background(Color.Gray)
                 .pointerInput(Unit) {
                     detectTapGestures { tapOffset ->
                         val squarePxSize = with(density) { squareSize.toPx() }
@@ -79,7 +77,7 @@ fun DragSquareScreen() {
                         )
                         squarePosition.value = Offset(newX, newY)
 
-                        // Captura a cor do pixel
+                        // Captura a cor do pixel no início do toque
                         activity?.window?.let { window ->
                             capturePixelColor(window, squarePosition.value, squarePxSize) { color ->
                                 squareColor.value = color
@@ -89,12 +87,7 @@ fun DragSquareScreen() {
                 }
         ) {
 
-            Image(
-                painter = painterResource(id = R.drawable.prismalogo), // ID da imagem no diretório drawable
-                contentDescription = "Descrição da imagem",
-            )
-
-            if(squarePosition.value != Offset.Zero) {
+            if (squarePosition.value != Offset.Zero) {
                 Box(
                     modifier = Modifier
                         .offset {
@@ -106,7 +99,6 @@ fun DragSquareScreen() {
                         .size(squareSize)
                         .clip(RoundedCornerShape(10.dp))
                         .background(squareColor.value)
-                        .shadow(elevation = 2.dp)
                         .pointerInput(Unit) {
                             detectDragGestures { change, dragAmount ->
                                 change.consume()
@@ -121,11 +113,7 @@ fun DragSquareScreen() {
 
                                 // Captura a cor do pixel durante o arraste
                                 activity?.window?.let { window ->
-                                    capturePixelColor(
-                                        window,
-                                        squarePosition.value,
-                                        squarePxSize
-                                    ) { color ->
+                                    capturePixelColor(window, squarePosition.value, squarePxSize) { color ->
                                         squareColor.value = color
                                     }
                                 }
@@ -133,13 +121,15 @@ fun DragSquareScreen() {
                         }
                 )
             }
+            Image(
+                painter = painterResource(id = R.drawable.prismalogo), // ID da imagem no diretório drawable
+                contentDescription = "Descrição da imagem",
+            )
         }
     }
     BottomSheetPreview()
 }
 
-
-// Função para capturar a cor do pixel usando PixelCopy
 fun capturePixelColor(
     window: Window,
     position: Offset,
@@ -152,11 +142,12 @@ fun capturePixelColor(
     val locationInWindow = IntArray(2)
     view.getLocationInWindow(locationInWindow)
 
+    // dont change ->
     val requestRect = Rect(
-        (position.x + squarePxSize / 2).toInt(),
-        (position.y + squarePxSize / 2).toInt(),
+        (position.x + squarePxSize / 2).toInt(), // X do centro do quadrado
+        (position.y + squarePxSize).toInt(),  // Y ajustado para a parte inferior do quadrado
         (position.x + squarePxSize / 2 + 1).toInt(),
-        (position.y + squarePxSize / 2 + 1).toInt()
+        (position.y + squarePxSize + 90).toInt() // 90 pixels abaixo da borda inferior do quadrado
     )
 
     PixelCopy.request(window, bitmap, { copyResult ->
@@ -165,10 +156,15 @@ fun capturePixelColor(
                 requestRect.centerX().coerceAtMost(bitmap.width - 1),
                 requestRect.centerY().coerceAtMost(bitmap.height - 1)
             )
-            onColorCaptured(Color(pixelColor))
+            onColorCaptured(Color(pixelColor)) // Atualiza a cor
         }
+        bitmap.recycle()
     }, Handler(Looper.getMainLooper()))
 }
+
+
+
+
 
 
 
