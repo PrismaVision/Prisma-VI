@@ -58,7 +58,11 @@ fun EyeDropperScreen() {
             ).show()
         }
     }
-    Box {
+    Box(modifier = Modifier.
+        fillMaxSize().
+        onGloballyPositioned { coordinates ->
+        screenSize.value = coordinates.size.toSize()
+    }) {
         Image(
             painter = painterResource(id = R.drawable.prismalogo),
             contentDescription = "Descrição da imagem",
@@ -66,9 +70,6 @@ fun EyeDropperScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .onGloballyPositioned { coordinates ->
-                    screenSize.value = coordinates.size.toSize()
-                }
                 .background(Color.Transparent)
                 .pointerInput(Unit) {
                     detectTapGestures { tapOffset ->
@@ -125,7 +126,6 @@ fun EyeDropperScreen() {
                         }
                 )
             }
-
         }
     }
     BottomSheetPreview()
@@ -148,7 +148,7 @@ fun capturePixelColor(
         (position.x + squarePxSize / 2).toInt(),
         (position.y + squarePxSize).toInt(),
         (position.x + squarePxSize / 2 + 1).toInt(),
-        (position.y + squarePxSize + 85).toInt()
+        (position.y + squarePxSize + 2 + 10).toInt()
     )
 
     PixelCopy.request(window, bitmap, { copyResult ->
