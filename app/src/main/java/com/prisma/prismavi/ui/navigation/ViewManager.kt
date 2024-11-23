@@ -8,8 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.prisma.prismavi.core.permissions.PermissionManager
 import com.prisma.prismavi.ui.camera.CameraPreview
+import com.prisma.prismavi.ui.camera.overlay.bottomsheet.EyeDropperScreen
 import com.prisma.prismavi.ui.splash.SplashScreen
-import com.prisma.prismavi.ui.tests.DragSquareScreen
 
 class ViewManager(
     activity: ComponentActivity,
@@ -29,7 +29,7 @@ class ViewManager(
     private fun RenderCurrentScreen() {
         when (val screen = currentScreen) {
             is Screen.Splash -> SplashScreen(onSplashFinished = { checkAndRequestPermissions() })
-            is Screen.Camera -> DragSquareScreen()
+            is Screen.Camera -> EyeDropperScreen()
             is Screen.DragScreenTest -> CameraPreview()
 
             // Adicione novas telas aqui, por exemplo:
