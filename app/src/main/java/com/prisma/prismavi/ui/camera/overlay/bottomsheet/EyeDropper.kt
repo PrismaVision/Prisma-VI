@@ -8,7 +8,6 @@ import android.view.PixelCopy
 import android.view.Window
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -31,12 +30,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
-import com.prisma.prismavi.R
 
 @Composable
 fun EyeDropperScreen() {
@@ -63,10 +60,6 @@ fun EyeDropperScreen() {
         onGloballyPositioned { coordinates ->
         screenSize.value = coordinates.size.toSize()
     }) {
-        Image(
-            painter = painterResource(id = R.drawable.prismalogo),
-            contentDescription = "Descrição da imagem",
-        )
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -128,7 +121,6 @@ fun EyeDropperScreen() {
             }
         }
     }
-    BottomSheetPreview()
 }
 
 fun capturePixelColor(
