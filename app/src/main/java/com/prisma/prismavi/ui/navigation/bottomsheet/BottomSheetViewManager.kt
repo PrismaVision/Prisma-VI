@@ -8,7 +8,9 @@ import com.prisma.prismavi.ui.camera.overlay.bottomsheet.content.ColorDetails
 import com.prisma.prismavi.ui.camera.overlay.bottomsheet.content.UserDetails
 
 class BottomSheetViewManager {
-    var currentContent by mutableStateOf<BottomSheetScreen>(BottomSheetScreen.UserDetails)
+
+    var currentContent by mutableStateOf<BottomSheetScreen>(BottomSheetScreen.ColorDetails)
+    var previusContent by mutableStateOf<BottomSheetScreen>(BottomSheetScreen.UserDetails)
 
 
     @Composable
@@ -21,6 +23,15 @@ class BottomSheetViewManager {
     }
 
     fun navigateTo(screen: BottomSheetScreen) {
+        previusContent = currentContent
         currentContent = screen
+    }
+
+    fun backToLast(){
+        if(currentContent != previusContent){
+        val aux = currentContent
+        navigateTo(previusContent)
+        previusContent = aux
+        }
     }
 }
