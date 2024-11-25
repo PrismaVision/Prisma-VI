@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -62,7 +63,6 @@ fun ColorDetails() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(screenHeight * 0.2f)
                 .padding(bottom = 8.dp)
         ) {
             Box(
@@ -74,8 +74,8 @@ fun ColorDetails() {
 
             Column(
                 modifier = Modifier
+                    .height(screenWidth * 0.35f)
                     .padding(start = 15.dp)
-                    .fillMaxWidth()
             ) {
                 Text(
                     text = colorName,
