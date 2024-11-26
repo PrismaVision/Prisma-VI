@@ -1,6 +1,8 @@
 package com.prisma.prismavi.ui.camera.overlay.bottomsheet.content
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,8 +10,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Add
@@ -29,6 +33,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.zIndex
+import com.prisma.prismavi.ui.navigation.Screen
 
 @Composable
 fun UserDetails() {
@@ -187,8 +199,125 @@ fun UserDetails() {
                 }
             }
         }
+//
+        Spacer(Modifier.height(screenHeight * 0.02f))
+
+        // Help Section
+        Text(
+            text = "Ajuda",
+            fontSize = (screenWidth * 0.04f).value.sp,
+            fontWeight = FontWeight.W600,
+            modifier = Modifier.padding(
+                top = 8.dp,
+                bottom = 8.dp
+            )
+        )
+        var isManualVisible by remember { mutableStateOf(false) }
+
+        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopStart) {
+
+            Box(
+                modifier = Modifier
+                    .zIndex(1f) // Garante que o ícone fique acima da caixa
+                    .offset(y = if (isManualVisible) (-20).dp else 0.dp) // Move o ícone para cima quando a caixa aparece
+            )
+
+            IconButton(onClick = { isManualVisible = !isManualVisible }) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = "User Manual Icon",
+                    tint = Color.Blue,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+
+            if (isManualVisible) {
+                Box(
+                    modifier = Modifier
+                        .padding(end = 16.dp, top = 42.dp)
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
+                        .padding(18.dp)
+                        .width(300.dp)
+                ) {
+                    Column {
+                        Text(
+                            text = "Manual de uso \n",
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "1.Camera",
+                            fontSize = 20.sp,
+                            color = Color.Black,
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "Para utilizar a câmera, será possível clicar no botão\n"+
+                                    "para capturar uma foto.Após tirar a foto,você poderá \n" +
+                                    "selecionar a área desejada para identificar a cor.\n" +
+                                    "Em seguida, será direcionado para um menu rolável, \n"+
+                                    "que exibirá detalhes sobre a cor escolhida.\n",
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "2.Barra Intuitiva",
+                            fontSize = 20.sp,
+                            color = Color.Black,
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "Para usar a barra intuitiva será possivel arrasta-la.\n" +
+                                    "E assim mostrando as seguintes informações.\n" +
+                                    "Acesso às especificações detalhadas da cor escolhida.\n" +
+                                    "Essas informações incluem os valores HEX, RGB e RYB,\n" +
+                                    "Color Match,Color Temperature,Color Terminology.\n" +
+                                    "Além disso, será exibida uma descrição sobre a cor.\n" +
+                                    "Você também terá a opção de salvar a cor junto com\n" +
+                                    " sua paleta personalizada de cores.\n",
+
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "3.Barra de Paletas",
+                            fontSize = 20.sp,
+                            color = Color.Black,
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "Parra usar-la você terar que arrasta-la para cima.\n" +
+                                    "A barra de paleta de cores permitirá acessar facilmente,\n" +
+                                    "suas paletas salvas além de um histórico  das cores\n" +
+                                    "utilizadas anteriormente.\n" +
+                                    "Isso facilita a organização e o rápido resgate de combinações e cores já trabalhadas.\n",
+
+                            fontSize = 12.sp,
+                            color = Color.Black
+                        )
+
+
+
+                        }
+
+
+                    }
+                }
+            }
+        }
+        Spacer(Modifier.height(screenHeight * 0.02f))
+        //
     }
-}
+
 
 
 
