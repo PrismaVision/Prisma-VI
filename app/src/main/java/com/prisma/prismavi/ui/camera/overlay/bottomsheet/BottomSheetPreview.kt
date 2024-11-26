@@ -33,7 +33,7 @@ fun BottomSheetPreview(
         scaffoldState = scaffoldState,
         sheetPeekHeight = bottomSheetHeight,
         sheetContent = {
-            bottomSheetViewManager = BottomSheetViewManager()
+            bottomSheetViewManager = BottomSheetViewManager(viewManager)
             BottomSheetBackButton(bottomSheetViewManager = bottomSheetViewManager)
             bottomSheetViewManager.RenderContent()
         }
