@@ -31,8 +31,12 @@ jobs:
             ${{ runner.os }}-gradle-
 
       # Build do APK
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x ./gradlew
+
       - name: Build APK
         run: ./gradlew assembleRelease
+
 
       # Criar uma release automaticamente
       - name: Create GitHub Release
