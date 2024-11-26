@@ -8,15 +8,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.prisma.prismavi.ui.camera.overlay.bottomsheet.content.BottomSheetBackButton
 import com.prisma.prismavi.ui.navigation.bottomsheet.BottomSheetViewManager
+import com.prisma.prismavi.viewmodel.ViewModelManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetPreview(
+    viewManager: ViewModelManager
 ) {
 
     lateinit var bottomSheetViewManager: BottomSheetViewManager
@@ -40,9 +41,3 @@ fun BottomSheetPreview(
     }
 }
 
-
-@Preview
-@Composable
-fun SheetPreview() {
-    BottomSheetPreview()
-}

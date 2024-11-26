@@ -14,11 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import com.prisma.prismavi.ui.camera.overlay.EyeDropperScreen
+import com.prisma.prismavi.viewmodel.ViewModelManager
 
 @Composable
 fun CapturedImagePreview(
     bitmap: Bitmap,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    viewManager: ViewModelManager
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -27,7 +29,7 @@ fun CapturedImagePreview(
             modifier = Modifier.fillMaxSize()
         )
 
-        EyeDropperScreen(bitmap)
+        EyeDropperScreen(bitmap, viewManager)
 
         IconButton(
             onClick = { onDelete() },

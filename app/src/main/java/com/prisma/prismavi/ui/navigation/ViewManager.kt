@@ -30,9 +30,7 @@ class ViewManager(
     private fun RenderCurrentScreen() {
         when (val screen = currentScreen) {
             is Screen.Splash -> SplashScreen(onSplashFinished = { checkAndRequestPermissions() })
-            is Screen.Camera -> CameraScreen()
-//            is Screen.Login -> viewManager?.let { LoginScreen(viewModelManager.loginViewModel, it) }
-//            is Screen.Register -> CameraScreen()
+            is Screen.Camera -> CameraScreen(viewModelManager)
 
             // Adicione novas telas aqui, por exemplo:
             // is Screen.Settings -> SettingsScreen()

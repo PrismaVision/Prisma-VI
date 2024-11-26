@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
@@ -27,9 +28,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.prisma.prismavi.viewmodel.ViewModelManager
 
 @Composable
-fun EyeDropperScreen(bitmap: Bitmap) {
+fun EyeDropperScreen(bitmap: Bitmap, viewModelManager: ViewModelManager) {
     val screenSize = remember { mutableStateOf(Size.Zero) }
     val squarePosition = remember { mutableStateOf(Offset.Zero) }
     val squareSize = 45.dp
@@ -43,13 +45,16 @@ fun EyeDropperScreen(bitmap: Bitmap) {
         val blue = (255 - (color.blue * 255)).toInt()
         return Color(red, green, blue)
     }
+    fun colorToHexString(color: Color): String {
+        return String.format("#%08X", color.toArgb())
+    }
 
     LaunchedEffect(squarePosition.value) {
         kotlinx.coroutines.delay(700)
         if (squarePosition.value != Offset.Zero) {
             Toast.makeText(
                 context,
-                "${squareColor.value}",
+                colorToHexString(squareColor.value),
                 Toast.LENGTH_SHORT
             ).show()
         }
