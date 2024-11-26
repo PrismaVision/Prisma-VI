@@ -1,13 +1,7 @@
-package com.prisma.prismavi.ui.camera.overlay.bottomsheet
+package com.prisma.prismavi.ui.camera.overlay
 
 import android.graphics.Bitmap
-import android.graphics.Rect
-import android.os.Handler
-import android.os.Looper
-import android.view.PixelCopy
-import android.view.Window
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -30,20 +24,18 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 
 @Composable
-fun EyeDropperScreen() {
+fun EyeDropperScreen(bitmap: Bitmap) {
     val screenSize = remember { mutableStateOf(Size.Zero) }
     val squarePosition = remember { mutableStateOf(Offset.Zero) }
     val squareSize = 45.dp
     val squareColor = remember { mutableStateOf(Color.Transparent) }
     val density = LocalDensity.current
     val context = LocalContext.current
-    val activity = context as? ComponentActivity
 
     LaunchedEffect(squarePosition.value) {
         kotlinx.coroutines.delay(700)
@@ -55,11 +47,14 @@ fun EyeDropperScreen() {
             ).show()
         }
     }
-    Box(modifier = Modifier.
-        fillMaxSize().
-        onGloballyPositioned { coordinates ->
-        screenSize.value = coordinates.size.toSize()
-    }) {
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .onGloballyPositioned { coordinates ->
+                screenSize.value = coordinates.size.toSize()
+            }
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -75,15 +70,12 @@ fun EyeDropperScreen() {
                         )
                         squarePosition.value = Offset(newX, newY)
 
-                        activity?.window?.let { window ->
-                            capturePixelColor(window, squarePosition.value, squarePxSize) { color ->
-                                squareColor.value = color
-                            }
+                        capturePixelColor(bitmap, squarePosition.value, squarePxSize) { color ->
+                            squareColor.value = color
                         }
                     }
                 }
         ) {
-
             if (squarePosition.value != Offset.Zero) {
                 Box(
                     modifier = Modifier
@@ -95,8 +87,11 @@ fun EyeDropperScreen() {
                         }
                         .size(squareSize)
                         .clip(RoundedCornerShape(10.dp))
-                        .border(color = squareColor.value, width = 6.dp,
-                            shape = RoundedCornerShape(10.dp))
+                        .border(
+                            color = squareColor.value,
+                            width = 6.dp,
+                            shape = RoundedCornerShape(10.dp)
+                        )
                         .background(Color.Transparent)
                         .pointerInput(Unit) {
                             detectDragGestures { change, dragAmount ->
@@ -110,10 +105,8 @@ fun EyeDropperScreen() {
                                 )
                                 squarePosition.value = Offset(newX, newY)
 
-                                activity?.window?.let { window ->
-                                    capturePixelColor(window, squarePosition.value, squarePxSize) { color ->
-                                        squareColor.value = color
-                                    }
+                                capturePixelColor(bitmap, squarePosition.value, squarePxSize) { color ->
+                                    squareColor.value = color
                                 }
                             }
                         }
@@ -124,39 +117,14 @@ fun EyeDropperScreen() {
 }
 
 fun capturePixelColor(
-    window: Window,
+    bitmap: Bitmap,
     position: Offset,
     squarePxSize: Float,
     onColorCaptured: (Color) -> Unit
 ) {
-    val view = window.decorView
-    val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
-
-    val locationInWindow = IntArray(2)
-    view.getLocationInWindow(locationInWindow)
-
-    // dont change ->
-    val requestRect = Rect(
-        (position.x + squarePxSize / 2).toInt(),
-        (position.y + squarePxSize).toInt(),
-        (position.x + squarePxSize / 2 + 1).toInt(),
-        (position.y + squarePxSize + 2 + 10).toInt()
-    )
-
-    PixelCopy.request(window, bitmap, { copyResult ->
-        if (copyResult == PixelCopy.SUCCESS) {
-            val pixelColor = bitmap.getPixel(
-                requestRect.centerX().coerceAtMost(bitmap.width - 1),
-                requestRect.centerY().coerceAtMost(bitmap.height - 1)
-            )
-            onColorCaptured(Color(pixelColor))
-        }
-        bitmap.recycle()
-    }, Handler(Looper.getMainLooper()))
+    val centerX = (position.x + squarePxSize / 2).toInt().coerceIn(0, bitmap.width - 1)
+    val centerY = (position.y + squarePxSize / 2).toInt().coerceIn(0, bitmap.height - 1)
+    val pixelColor = bitmap.getPixel(centerX, centerY)
+    onColorCaptured(Color(pixelColor))
 }
 
-@Preview
-@Composable
-fun DragSquareScreenPreview(){
-    EyeDropperScreen()
-}
