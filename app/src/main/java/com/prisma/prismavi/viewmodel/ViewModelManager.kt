@@ -8,6 +8,10 @@ import com.prisma.prismavi.viewmodel.user.RegisterViewModel
 class ViewModelManager(
     private val viewModelProvider: ViewModelProvider
 ) {
+    fun colorViewModelConnection(colorToHexString: String) {
+        colorViewModel.fetchColorDetails(colorToHexString)
+    }
+
     val colorViewModel: ColorViewModel by lazy {
         viewModelProvider[ColorViewModel::class.java]
     }

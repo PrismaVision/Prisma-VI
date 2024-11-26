@@ -46,7 +46,9 @@ fun EyeDropperScreen(bitmap: Bitmap, viewModelManager: ViewModelManager) {
         return Color(red, green, blue)
     }
     fun colorToHexString(color: Color): String {
-        return String.format("#%08X", color.toArgb())
+        var result = String.format("#%08X", color.toArgb())
+        result = result.replaceFirst("#FF", "#")
+        return result
     }
 
     LaunchedEffect(squarePosition.value) {
@@ -58,6 +60,7 @@ fun EyeDropperScreen(bitmap: Bitmap, viewModelManager: ViewModelManager) {
                 Toast.LENGTH_SHORT
             ).show()
         }
+        viewModelManager.colorViewModelConnection(colorToHexString(squareColor.value))
     }
 
     Box(
