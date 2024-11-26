@@ -20,7 +20,6 @@ fun CameraPreview(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    // Configuração do PreviewView
     val previewView = remember { PreviewView(context) }
 
     LaunchedEffect(Unit) {
@@ -38,13 +37,12 @@ fun CameraPreview(
                 cameraSelector,
                 preview
             )
-            onPreviewViewReady(previewView) // Passa o PreviewView para o pai
+            onPreviewViewReady(previewView)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    // Exibe o PreviewView
     AndroidView(
         factory = { previewView },
         modifier = modifier

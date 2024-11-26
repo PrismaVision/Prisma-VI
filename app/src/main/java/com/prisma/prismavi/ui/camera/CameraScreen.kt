@@ -12,12 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import com.prisma.prismavi.ui.camera.overlay.bottomsheet.BottomSheetPreview
+import com.prisma.prismavi.viewmodel.ViewModelManager
 
 @Composable
-fun CameraScreen() {
-    val context = LocalContext.current
+fun CameraScreen(viewModelManager: ViewModelManager) {
 
     var capturedBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var previewView: PreviewView? by remember { mutableStateOf(null) }
@@ -30,7 +29,8 @@ fun CameraScreen() {
                 bitmap = capturedBitmap!!,
                 onDelete = {
                     capturedBitmap = null
-                }
+                },
+                viewManager = viewModelManager
             )
         } else {
             CameraPreview(
@@ -55,7 +55,7 @@ fun CameraScreen() {
                 }
             )
         }
-        BottomSheetPreview()
+        BottomSheetPreview(viewModelManager)
     }
 }
 

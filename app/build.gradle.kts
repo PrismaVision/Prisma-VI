@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-parcelize")
+
 }
 
 android {
@@ -50,7 +52,7 @@ android {
 }
 
 dependencies {
-    val camerax_version = "1.3.4"
+    implementation(libs.androidx.runtime.livedata)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -61,6 +63,12 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
+
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.compose.material3:material3:1.1.1")
     implementation("androidx.compose.material:material-icons-extended:1.5.0")
@@ -68,11 +76,11 @@ dependencies {
     implementation ("androidx.activity:activity-ktx:1.7.0")
 
     // CameraX Dependencies
-    implementation("androidx.camera:camera-core:$camerax_version")
-    implementation("androidx.camera:camera-camera2:$camerax_version")
-    implementation("androidx.camera:camera-lifecycle:$camerax_version")
-    implementation("androidx.camera:camera-view:$camerax_version")
-    implementation("androidx.camera:camera-extensions:$camerax_version")
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.extensions)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
