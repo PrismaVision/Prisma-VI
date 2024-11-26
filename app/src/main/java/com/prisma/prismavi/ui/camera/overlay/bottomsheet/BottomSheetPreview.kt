@@ -34,7 +34,6 @@ fun BottomSheetPreview(
         sheetPeekHeight = bottomSheetHeight,
         sheetContent = {
             bottomSheetViewManager = BottomSheetViewManager(viewManager)
-            BottomSheetBackButton(bottomSheetViewManager = bottomSheetViewManager)
             bottomSheetViewManager.RenderContent()
         }
     ) {
