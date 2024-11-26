@@ -9,10 +9,12 @@ import androidx.compose.runtime.setValue
 import com.prisma.prismavi.core.permissions.PermissionManager
 import com.prisma.prismavi.ui.camera.CameraScreen
 import com.prisma.prismavi.ui.splash.SplashScreen
+import com.prisma.prismavi.viewmodel.ViewModelManager
 
 class ViewManager(
     activity: ComponentActivity,
-    private val permissionManager: PermissionManager
+    private val permissionManager: PermissionManager,
+    private val viewModelManager: ViewModelManager
 ) {
 
     private var currentScreen by mutableStateOf<Screen>(Screen.Splash)
@@ -29,6 +31,8 @@ class ViewManager(
         when (val screen = currentScreen) {
             is Screen.Splash -> SplashScreen(onSplashFinished = { checkAndRequestPermissions() })
             is Screen.Camera -> CameraScreen()
+//            is Screen.Login -> viewManager?.let { LoginScreen(viewModelManager.loginViewModel, it) }
+//            is Screen.Register -> CameraScreen()
 
             // Adicione novas telas aqui, por exemplo:
             // is Screen.Settings -> SettingsScreen()
