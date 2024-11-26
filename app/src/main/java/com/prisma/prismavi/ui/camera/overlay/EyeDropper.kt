@@ -37,6 +37,13 @@ fun EyeDropperScreen(bitmap: Bitmap) {
     val density = LocalDensity.current
     val context = LocalContext.current
 
+    fun invertColor(color: Color): Color {
+        val red = (255 - (color.red * 255)).toInt()
+        val green = (255 - (color.green * 255)).toInt()
+        val blue = (255 - (color.blue * 255)).toInt()
+        return Color(red, green, blue)
+    }
+
     LaunchedEffect(squarePosition.value) {
         kotlinx.coroutines.delay(700)
         if (squarePosition.value != Offset.Zero) {
@@ -88,11 +95,11 @@ fun EyeDropperScreen(bitmap: Bitmap) {
                         .size(squareSize)
                         .clip(RoundedCornerShape(10.dp))
                         .border(
-                            color = squareColor.value,
-                            width = 6.dp,
+                            color = invertColor(squareColor.value),
+                            width = 4.dp,
                             shape = RoundedCornerShape(10.dp)
                         )
-                        .background(Color.Transparent)
+                        .background(squareColor.value)
                         .pointerInput(Unit) {
                             detectDragGestures { change, dragAmount ->
                                 change.consume()
