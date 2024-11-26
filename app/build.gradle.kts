@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-parcelize")
+
 }
 
 android {
@@ -50,6 +52,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.runtime.livedata)
     val camerax_version = "1.3.4"
 
     implementation(libs.androidx.core.ktx)
@@ -60,6 +63,11 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
 
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.compose.material3:material3:1.1.1")
