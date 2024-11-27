@@ -45,7 +45,7 @@ jobs:
       - name: Build and sign APK
         run: ./gradlew assembleRelease -Psigning.keyAlias=${{ secrets.KEY_ALIAS }} -Psigning.keyPassword=${{ secrets.KEY_PASSWORD }} -Psigning.storeFile=./app/keystore/prismakeystore.jks -Psigning.storePassword=${{ secrets.KEYSTORE_PASSWORD }}
 
-      # Passo para listar os arquivos no diretório de saída para depuração
+      # Passo para listar os arquivos gerados durante a build para depuração
       - name: List build files
         run: |
           ls -R app/build/outputs/apk/
@@ -62,13 +62,33 @@ jobs:
           draft: false
           prerelease: false
 
-      # Passo para fazer upload do APK assinado para a release
+      # Passo para verificar se o APK já existe na release e excluir, se necessário
+      - name: Check and delete existing APK asset if exists
+        run: |
+          # Listar os assets da release
+          ASSETS_URL="https://api.github.com/repos/${{ github.repository }}/releases/${{ steps.create_release.outputs.id }}/assets"
+          response=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" $ASSETS_URL)
+
+          # Buscar o ID do asset existente
+          asset_id=$(echo "$response" | jq -r '.[] | select(.name == "app-release.apk") | .id')
+
+          # Se um APK já existir, deletá-lo
+          if [ "$asset_id" != "null" ]; then
+            echo "Deleting existing asset with ID: $asset_id"
+            curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases/assets/$asset_id"
+          else
+            echo "No existing APK asset found, skipping deletion."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Passo para fazer upload do novo APK para a release
       - name: Upload APK to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: app/build/outputs/apk/release/app-release.apk  # Verifique o caminho correto
+          asset_path: app/build/outputs/apk/release/app-release.apk  # Caminho do novo APK
           asset_name: app-release.apk  # Nome do arquivo
           asset_content_type: application/vnd.android.package-archive
