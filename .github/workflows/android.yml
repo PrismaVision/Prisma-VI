@@ -14,11 +14,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Configurar JDK 17 (Usando Adoptium automaticamente)
-      - name: Set up JDK 17
+      # Configurar JDK 17 usando a distribuição Temurin
+      - name: Set up JDK 17 (Temurin)
         uses: actions/setup-java@v3
         with:
           java-version: '17'  # JDK 17
+          distribution: 'temurin'  # Usando a distribuição Temurin
 
       # Cache do Gradle para acelerar builds
       - name: Cache Gradle dependencies
@@ -55,4 +56,3 @@ jobs:
           asset_path: app/build/outputs/apk/release/app-release.apk  # Caminho correto do APK
           asset_name: app-release.apk  # Nome do arquivo do APK
           asset_content_type: application/vnd.android.package-archive  # Tipo de conteúdo para o APK
-
