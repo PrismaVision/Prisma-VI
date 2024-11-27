@@ -2,8 +2,11 @@ name: Build and Release APK
 
 on:
   push:
-    branches:
-      - main # Branch que aciona o workflow
+    tags:
+      - 'v*' # Aciona apenas para tags que começam com "v"
+
+permissions:
+  contents: write # Garante que o GITHUB_TOKEN tenha permissão para criar releases
 
 jobs:
   build:
@@ -18,10 +21,14 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: 11
+          java-version: 17 # Java 17 necessário para o Android Gradle Plugin
           distribution: 'temurin'
 
-      # Cache do Gradle para acelerar builds
+      # Conceder permissão de execução ao Gradle Wrapper
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x ./gradlew
+
+      # Cache do Gradle para acelerar builds futuros
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
         with:
@@ -31,22 +38,18 @@ jobs:
             ${{ runner.os }}-gradle-
 
       # Build do APK
-      - name: Grant execute permission for Gradle Wrapper
-        run: chmod +x ./gradlew
-
       - name: Build APK
         run: ./gradlew assembleRelease
 
-
-      # Criar uma release automaticamente
+      # Criar uma release no GitHub
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.run_number }} # Define a tag da release
-          release_name: "Release v${{ github.run_number }}"
+          tag_name: ${{ github.ref_name }} # Usar o nome da tag atual
+          release_name: "Release ${{ github.ref_name }}"
           draft: false
           prerelease: false
 
