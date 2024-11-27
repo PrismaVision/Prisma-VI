@@ -14,12 +14,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     
-    # Passo 2: Configurar o JDK 17 (ajustado para seu projeto)
+    # Passo 2: Configurar o JDK 17 com Adoptium (corrigido)
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'  # Agora estamos usando JDK 17
-        distribution: 'adoptopenjdk'
+        distribution: 'adoptium'  # Corrigido para usar Adoptium
+        cache: 'maven'  # Cache do Maven (opcional, pode acelerar o build se você usar Maven)
 
     # Passo 3: Configurar o Android SDK
     - name: Set up Android SDK
