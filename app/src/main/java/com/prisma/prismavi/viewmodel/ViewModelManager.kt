@@ -12,6 +12,14 @@ class ViewModelManager(
         colorViewModel.fetchColorDetails(colorToHexString)
     }
 
+    fun loginViewModelConnection(email: String, password: String) {
+        loginViewModel.login(email, password)
+    }
+
+    fun registerViewModelConnection(nickName: String, email: String, password: String) {
+        registerViewModel.register(nickName, email, password)
+    }
+
     val colorViewModel: ColorViewModel by lazy {
         viewModelProvider[ColorViewModel::class.java]
     }
