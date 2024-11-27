@@ -34,7 +34,7 @@ jobs:
       - name: Give execute permission to gradlew
         run: chmod +x ./gradlew
 
-      # Passo para configurar o keystore a partir dos segredos
+      # Passo para configurar o keystore
       - name: Set up keystore
         run: |
           echo "$KEYSTORE_FILE" | base64 --decode > ./app/keystore/prismakeystore.jks
