@@ -14,13 +14,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
     
-    # Passo 2: Configurar o JDK 17 com Adoptium (corrigido)
+    # Passo 2: Configurar o JDK 17 com a distribuição padrão (Adoptium já é a padrão agora)
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: '17'  # Agora estamos usando JDK 17
-        distribution: 'adoptium'  # Corrigido para usar Adoptium
-        cache: 'maven'  # Cache do Maven (opcional, pode acelerar o build se você usar Maven)
+        java-version: '17'  # Usando JDK 17 diretamente
+        cache: 'maven'  # Se você usa Maven, isso pode acelerar builds futuros (opcional)
 
     # Passo 3: Configurar o Android SDK
     - name: Set up Android SDK
@@ -39,29 +38,4 @@ jobs:
 
     # Passo 5: Build do APK (Sem assinatura por enquanto)
     - name: Build APK
-      run: ./gradlew assembleRelease  # Isso vai gerar o APK de release
-
-    # Passo 6: Upload do APK como artefato
-    - name: Upload APK artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: app-release-apk
-        path: app/build/outputs/apk/release/app-release.apk  # Ajuste o caminho conforme a estrutura do seu projeto
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    # Passo 1: Checar o código novamente
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    # Passo 2: Criar uma nova release no GitHub e fazer o upload do APK
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: app/build/outputs/apk/release/app-release.apk  # Caminho do APK gerado
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # O token do GitHub
-
+      run: ./gradlew a
