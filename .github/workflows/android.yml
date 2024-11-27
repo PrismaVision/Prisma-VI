@@ -50,7 +50,7 @@ jobs:
       - name: Sign APK
         run: |
           # Confirme que o caminho para o keystore está correto
-          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore app/keystore/prismakeystore.jks -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} app/build/outputs/apk/release/app-release-unsigned.apk key0prisma
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore app/keystore/prismakeystore.jks -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} app/build/outputs/apk/release/app-release.apk key0prisma
 
       # Passo para criar a release no GitHub
       - name: Create GitHub Release
