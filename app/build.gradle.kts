@@ -23,7 +23,7 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("app/keystore/prismakeystore.jks")
+            storeFile = file("keystore/prismakeystore.jks")
             storePassword = "prismavision"
             keyAlias = "key0Prisma"
             keyPassword = "prismavision"
