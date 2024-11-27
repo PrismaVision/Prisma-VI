@@ -1,0 +1,66 @@
+name: Build and Release APK
+
+on:
+  push:
+    branches:
+      - main  # Ou a branch que você usa para deploy (ex: develop)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Passo 1: Checar o código do repositório
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    # Passo 2: Configurar o JDK 17 (ajustado para seu projeto)
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'  # Agora estamos usando JDK 17
+        distribution: 'adoptopenjdk'
+
+    # Passo 3: Configurar o Android SDK
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        api-level: 34  # A versão do SDK corresponde ao seu targetSdk
+        build-tools: '34.0.0'  # Use a versão do build-tools adequada à sua versão do SDK
+
+    # Passo 4: Instalar o Gradle
+    - name: Install Gradle
+      run: |
+        wget https://services.gradle.org/distributions/gradle-8.7-bin.zip -P /tmp
+        unzip -d /opt/gradle /tmp/gradle-8.7-bin.zip
+        export PATH=$PATH:/opt/gradle/gradle-8.7/bin
+        gradle --version
+
+    # Passo 5: Build do APK (Sem assinatura por enquanto)
+    - name: Build APK
+      run: ./gradlew assembleRelease  # Isso vai gerar o APK de release
+
+    # Passo 6: Upload do APK como artefato
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-release-apk
+        path: app/build/outputs/apk/release/app-release.apk  # Ajuste o caminho conforme a estrutura do seu projeto
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    # Passo 1: Checar o código novamente
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Passo 2: Criar uma nova release no GitHub e fazer o upload do APK
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: app/build/outputs/apk/release/app-release.apk  # Caminho do APK gerado
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # O token do GitHub
+
