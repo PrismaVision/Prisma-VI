@@ -3,30 +3,25 @@ name: Build and Release APK
 on:
   push:
     branches:
-      - main  # A branch que aciona o workflow
+      - main  # O workflow será acionado ao fazer push na branch 'main'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout do código
+      # Passo para fazer checkout do código
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Configurar JDK 17 usando a distribuição Temurin
-      - name: Set up JDK 17 (Temurin)
+      # Passo para configurar o JDK
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'  # JDK 17
-          distribution: 'temurin'  # Usando a distribuição Temurin
-          # Removido 'cache: maven' pois não estamos usando Maven
+          java-version: 17
+          distribution: temurin
 
-      # Garantir que o script gradlew tenha permissões de execução
-      - name: Grant execute permissions to gradlew
-        run: chmod +x ./gradlew  # Garantir permissões de execução para o gradlew
-
-      # Cache do Gradle para acelerar builds
+      # Passo para cache de dependências do Gradle
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
         with:
@@ -35,29 +30,29 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # Build do APK (Sem assinatura por enquanto)
+      # Passo para compilar o APK (assembleRelease)
       - name: Build APK
-        run: ./gradlew assembleRelease  # Isso gera o APK de release
+        run: ./gradlew assembleRelease
 
-      # Criar uma release automaticamente no GitHub
+      # Passo para criar a release no GitHub
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.run_number }}  # Define a tag da release com base no número do run
-          release_name: "Release v${{ github.run_number }}"  # Nome da release
+          tag_name: v${{ github.run_number }}  # Definindo o nome da tag da release
+          release_name: "Release v${{ github.run_number }}"
           draft: false
           prerelease: false
 
-      # Fazer upload do APK para a release
+      # Passo para fazer upload do APK para a release
       - name: Upload APK to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}  # URL para upload da release
-          asset_path: app/build/outputs/apk/release/app-release.apk  # Caminho correto do APK
-          asset_name: app-release.apk  # Nome do arquivo do APK
-          asset_content_type: application/vnd.android.package-archive  # Tipo de conteúdo para o APK
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: app/build/outputs/apk/release/app-release-unsigned.apk  # Caminho correto para o APK
+          asset_name: app-release-unsigned.apk  # Nome do arquivo
+          asset_content_type: application/vnd.android.package-archive
