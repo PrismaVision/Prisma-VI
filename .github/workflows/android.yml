@@ -20,7 +20,7 @@ jobs:
         with:
           java-version: '17'  # JDK 17
           distribution: 'temurin'  # Usando a distribuição Temurin
-          cache: 'maven'  # Cache do Maven, se você usa Maven (caso não, pode remover)
+          # Removido 'cache: maven' pois não estamos usando Maven
 
       # Garantir que o script gradlew tenha permissões de execução
       - name: Grant execute permissions to gradlew
