@@ -34,9 +34,16 @@ jobs:
       - name: Give execute permission to gradlew
         run: chmod +x ./gradlew
 
-      # Passo para compilar o APK (assembleRelease)
-      - name: Build APK
-        run: ./gradlew assembleRelease
+      # Passo para configurar o keystore a partir dos segredos
+      - name: Set up keystore
+        run: |
+          echo "$KEYSTORE_FILE" | base64 --decode > ./app/keystore/prismakeystore.jks
+        env:
+          KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}  # A variável de segredo contendo o keystore codificado em base64
+
+      # Passo para compilar e assinar o APK (assembleRelease)
+      - name: Build and sign APK
+        run: ./gradlew assembleRelease -Psigning.keyAlias=${{ secrets.KEY_ALIAS }} -Psigning.keyPassword=${{ secrets.KEY_PASSWORD }} -Psigning.storeFile=./app/keystore/prismakeystore.jks -Psigning.storePassword=${{ secrets.KEYSTORE_PASSWORD }}
 
       # Passo para criar a release no GitHub
       - name: Create GitHub Release
@@ -50,13 +57,13 @@ jobs:
           draft: false
           prerelease: false
 
-      # Passo para fazer upload do APK para a release
+      # Passo para fazer upload do APK assinado para a release
       - name: Upload APK to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: app/build/outputs/apk/release/app-release-unsigned.apk  # Caminho correto para o APK
-          asset_name: app-release-unsigned.apk  # Nome do arquivo
+          asset_path: app/build/outputs/apk/release/app-release.apk  # Caminho correto para o APK assinado
+          asset_name: app-release.apk  # Nome do arquivo
           asset_content_type: application/vnd.android.package-archive
