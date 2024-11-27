@@ -6,7 +6,7 @@ on:
       - 'v*' # Aciona apenas para tags que começam com "v"
 
 permissions:
-  contents: write # Garante que o GITHUB_TOKEN tenha permissão para criar releases
+  contents: write # Garante permissões básicas para o GITHUB_TOKEN (não usado aqui)
 
 jobs:
   build:
@@ -46,9 +46,9 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # Usar o token pessoal aqui
         with:
-          tag_name: ${{ github.ref_name }} # Usar o nome da tag atual
+          tag_name: ${{ github.ref_name }} # Nome da tag que acionou o workflow
           release_name: "Release ${{ github.ref_name }}"
           draft: false
           prerelease: false
@@ -57,7 +57,7 @@ jobs:
       - name: Upload APK to release
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # Usar o token pessoal aqui
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: app/build/outputs/apk/release/app-release.apk
