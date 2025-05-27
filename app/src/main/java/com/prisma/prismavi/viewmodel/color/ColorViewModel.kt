@@ -33,7 +33,7 @@ class ColorViewModel : ViewModel() {
     fun fetchColorDetails(hex: String) { //Função pública que inicia a requisição para buscar os detalhes da cor com o código hexadecimal informado.
         _loading.value = true
 
-        val hexWithQuotes = "\"$hex\"" // garante que a string seja interpretada como JSON string
+        val hexWithQuotes = hex
         val body = hexWithQuotes.toRequestBody("text/plain".toMediaType())
 
         apiService.getColorInfo(body).enqueue(object : Callback<ColorResponse> { //Chamada assíncrona com Retrofit.

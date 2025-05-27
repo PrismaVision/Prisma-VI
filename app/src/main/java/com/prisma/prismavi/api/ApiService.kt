@@ -19,7 +19,7 @@ interface ApiService {
     @POST("auth/register")
     fun register(@Body request: RegisterRequest): Call<RegisterResponse>
 
-    @POST("api/mock/search-color")
+    @POST("api/search-color")
     @Headers("Content-Type: text/plain")
     fun getColorInfo(@Body body: RequestBody): Call<ColorResponse>
 }
