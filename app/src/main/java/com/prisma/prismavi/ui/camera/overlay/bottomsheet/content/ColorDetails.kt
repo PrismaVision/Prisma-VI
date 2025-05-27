@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -24,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prisma.prismavi.viewmodel.color.ColorViewModel
@@ -33,14 +35,15 @@ fun parseColor(colorString: String): Color {
     return Color(colorLong or 0xFF000000)
 }
 
+//Tela de resposta
 @Composable
-fun ColorDetails(colorViewModel: ColorViewModel) {
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-    val screenWidth = configuration.screenWidthDp.dp
-    val sheetHeight = screenHeight * 0.80f
-    val colorObject = colorViewModel.colorResponse.observeAsState()
-    val colorObjectValue = colorObject.value
+    fun ColorDetails(colorViewModel: ColorViewModel) {
+        val configuration = LocalConfiguration.current
+        val screenHeight = configuration.screenHeightDp.dp
+        val screenWidth = configuration.screenWidthDp.dp
+        val sheetHeight = screenHeight * 0.80f
+        val colorObject = colorViewModel.colorResponse.observeAsState()
+        val color = colorObject.value ?: return
 
     Column(
         modifier = Modifier
@@ -50,7 +53,6 @@ fun ColorDetails(colorViewModel: ColorViewModel) {
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        colorObjectValue?.let { color ->
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -60,180 +62,178 @@ fun ColorDetails(colorViewModel: ColorViewModel) {
                 modifier = Modifier
                     .size(screenWidth * 0.35f)
                     .clip(RoundedCornerShape(20.dp))
-                    .background(parseColor(color.hexCode))
+                    .background(parseColor(color.hexCode?: "#000000") )
             )
+
 
             Column(
                 modifier = Modifier
                     .height(screenWidth * 0.35f)
-                    .padding(start = 15.dp)
-            ) {
-                    Text(
-                        text = color.name,
-                        fontSize = (screenWidth * 0.04f).value.sp,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .clip(RoundedCornerShape(15.dp))
-                        .background(Color.Gray.copy(alpha = 0.3f))
-                        .padding(16.dp)
-                ) {
-                    Text(text = "HEX: ${color.hexCode}", fontSize = 14.sp)
-                    Text(text = "RGB: (${color.rgbCode})", fontSize = 14.sp)
-                    Text(text = "RYB: (${color.rybPercentages.r}, ${color.rybPercentages.y}, ${color.rybPercentages.b})", fontSize = 14.sp)
-                }
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .weight(0.9f)
-                        .padding(end = 8.dp)
-                ) {
-                    Text(
-                        text = "Temperatura da Cor",
-                        fontSize = (screenWidth * 0.04f).value.sp,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(11.dp))
-                            .background(Color.Gray.copy(alpha = 0.3f))
-                            .padding(16.dp, 19.dp)
-                    ) {
-                        Text(
-                            text = color.colorTemperature,
-                            fontSize = (screenWidth * 0.04f).value.sp,
-                            modifier = Modifier.align(Alignment.CenterStart)
-                        )
-                    }
-
-                    Text(
-                        text = "Terminologia da Cor",
-                        fontSize = (screenWidth * 0.04f).value.sp,
-                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
-                    )
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(11.dp))
-                            .background(Color.Gray.copy(alpha = 0.3f))
-                            .padding(16.dp, 19.dp)
-                    ) {
-                        Text(
-                            text = color.colorTerminology,
-                            fontSize = (screenWidth * 0.04f).value.sp,
-                            modifier = Modifier.align(Alignment.CenterStart)
-                        )
-                    }
-                }
-
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 10.dp)
-                ) {
-                    Text(
-                        text = "Cores Correspondentes",
-                        fontSize = (screenWidth * 0.04f).value.sp,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(15.dp))
-                            .background(Color.Gray.copy(alpha = 0.3f))
-                            .padding(10.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth().padding(10.dp).fillMaxHeight(),
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(45.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .background(parseColor(color.twoHexOfColorsThatMatch[0]))
-                                        .padding(10.dp)
-                                )
-
-                                Text(
-                                    text = color.twoHexOfColorsThatMatch[0],
-                                    fontSize = 14.sp,
-                                    modifier = Modifier.padding(start = 6.dp)
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(45.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .background(parseColor(color.twoHexOfColorsThatMatch[1]))
-                                        .padding(10.dp)
-                                )
-
-                                Text(
-                                    text = color.twoHexOfColorsThatMatch[1],
-                                    fontSize = 14.sp,
-                                    modifier = Modifier.padding(start = 6.dp)
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-        ) {
-            Text(
-                text = "Descrição",
-                fontSize = (screenWidth * 0.04f).value.sp,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(15.dp))
-                    .background(Color.Gray.copy(alpha = 0.3f))
-                    .padding(16.dp)
+                    .padding(start = 15.dp),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = color.colorDescription,
-                    fontSize = (screenWidth * 0.04f).value.sp,
-                    modifier = Modifier.align(Alignment.CenterStart)
+                    text = color.name,
+                    fontSize = (screenWidth * 0.045f).value.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(15.dp))
+                        .background(Color.Gray.copy(alpha = 0.3f))
+                        .padding(12.dp)
+                ) {
+                    Text(text = "HEX: ${color.hexCode}", fontSize = 14.sp)
+                    color.rgb?.let {
+                        Text(text = "RGB: R=${it.red}, G=${it.green}, B=${it.blue}", fontSize = 14.sp)
+                    } ?: Text("RGB: não disponível", fontSize = 14.sp)
+                    Text(text = "HSL: ${color.hsl}", fontSize = 14.sp)
+                    Text(text = "Luminância: ${"%.3f".format(color.luminance)}", fontSize = 14.sp)
+                }
+            }
+        }
+
+        Text(
+            text = "Tags Psicológicas",
+            fontSize = (screenWidth * 0.04f).value.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+
+        ) {
+            color.psychologyTags.forEach { tag ->
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Color.Gray.copy(alpha = 0.3f))
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                ) {
+                    Text(text = tag, fontSize = 13.sp)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "Cores da Paleta",
+            fontSize = (screenWidth * 0.04f).value.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            color.colorPalette.forEach { item ->
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(parseColor(item.hex))
+                    )
+                    Text(text = item.name, fontSize = 12.sp)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "Cor Complementar",
+            fontSize = (screenWidth * 0.04f).value.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(top = 6.dp)
+                .clip(RoundedCornerShape(15.dp))
+                .background(Color.Gray.copy(alpha = 0.3f))
+                .padding(12.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(parseColor(color.complementaryColor))
+            )
+            Text(
+                text = color.complementaryColor,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "Variações HEX",
+            fontSize = (screenWidth * 0.04f).value.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+
+        ) {
+            color.hexVariations.forEach { hex ->
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(parseColor(hex))
                 )
             }
         }
-    }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "Categoria da Cor: ${color.colorCategory}",
+            fontSize = (screenWidth * 0.04f).value.sp,
+            fontWeight = FontWeight.Medium
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "Sugestões de Uso",
+            fontSize = (screenWidth * 0.04f).value.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(15.dp))
+                .background(Color.Gray.copy(alpha = 0.3f))
+                .padding(12.dp)
+        ) {
+            color.designUsageSuggestions.forEach { suggestion ->
+                Text(text = "• $suggestion", fontSize = 14.sp, modifier = Modifier.padding(bottom = 4.dp))
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = "Descrição",
+            fontSize = (screenWidth * 0.04f).value.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(15.dp))
+                .background(Color.Gray.copy(alpha = 0.3f))
+                .padding(12.dp)
+        ) {
+            Text(text = color.description, fontSize = 14.sp)
+        }
     }
 }
